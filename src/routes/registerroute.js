@@ -7,7 +7,4 @@ const router = express.Router();
 // Route for getting all users
 router.post("/", RegisterallController.register);
 
-// Route for creating a user
-router.post("/", RegisterallController.login);
-
 module.exports = router;
