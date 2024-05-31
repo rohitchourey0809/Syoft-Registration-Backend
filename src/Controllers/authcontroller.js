@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "/path_to_env_file" });
+require("dotenv").config();
 const User = require("../Models/usermodels");
 let jwt = require("jsonwebtoken");
 

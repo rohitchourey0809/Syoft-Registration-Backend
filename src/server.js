@@ -1,10 +1,12 @@
-require("dotenv").config();
+
+const mongoose = require('mongoose');
 const express = require("express");
 const connect = require("./Config/db");
 const Userroutes = require("./routes/userroutes");
 const Productroutes = require("./routes/productroutes");
 const Registerroutes = require("./routes/registerroute");
 const Loginroutes = require("./routes/loginroute");
+require("dotenv").config();
 
 // const { register, login } = require("./Controllers/authcontroller");
 
@@ -24,12 +26,16 @@ app.use("/products", Productroutes);
 app.use("/register", Registerroutes);
 app.use("/login", Loginroutes);
 
-app.listen(PORT, async () => {
-  try {
-    await connect();
-    console.log("Connected to the database");
-    console.log(`Server is running on port ${"http://localhost:" + PORT}`);
-  } catch (err) {
-    console.error("Error connecting to the database:", err);
-  }
-});
+mongoose
+  .connect(
+    process.env.MONGO_URI ?? "mongodb://localhost:27017/Syofrt-Regitration"
+  )
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB", err);
+  });

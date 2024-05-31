@@ -30,6 +30,6 @@ userschema.methods.checkPassword = function (PASSWORD) {
 };
 
 //    <==================encrypt=============>
-const User = mongoose.model("user", userschema);
+const User = mongoose.model("student", userschema);
 
 module.exports = User;
