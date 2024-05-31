@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Backend Work",
+  "description": "\"Backend Work\"",
   "main": "src/server.js",
   "scripts": {
     "start": "nodemon src/server.js",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Rohit Chourey",
   "license": "ISC",
@@ -22,6 +22,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.5.0",
     "nodemon": "^1.14.9",
+    "react-scripts": "^5.0.1",
     "serve": "^14.0.1",
     "serve-favicon": "^2.5.0"
   }
