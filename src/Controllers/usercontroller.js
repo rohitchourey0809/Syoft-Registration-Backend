@@ -1,7 +1,7 @@
 const User = require("../Models/usermodels");
 
 
-const getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   try {
     const userData = await User.find();
     console.log(userData);
@@ -12,7 +12,7 @@ const getAllUsers = async (req, res) => {
 };
 
 // Define the controller function for creating a user
-const createUser = async (req, res) => {
+exports.createUser = async (req, res) => {
   try {
     const userPost = await User.create(req.body);
     return res.status(200).send(userPost);
@@ -22,7 +22,3 @@ const createUser = async (req, res) => {
 };
 
 // Export the router with the defined routes
-module.exports = {
-  getAllUsers,
-  createUser,
-};
