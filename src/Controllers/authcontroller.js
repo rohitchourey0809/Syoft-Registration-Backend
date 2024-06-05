@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
 
     let token = jwt.sign({ userRegister }, `${process.env.JWT_SECRET_KEY}`);
 
-    return res.status(400).send({ userRegister, token });
+    return res.status(200).send({ userRegister, token });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
