@@ -33,7 +33,7 @@ router.post("/", productController.createProduct);
 // Get all products
 router.get("/", productController.getAllProducts);
 
-router.get("/product", productController.paginationqueryparama);
+router.get("/", productController.paginationqueryparama);
 
 // Get a single product by ID
 router.get("/:id", productController.getProductById);
