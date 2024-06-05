@@ -9,54 +9,75 @@ const generateToken = (userdata) => {
 
 exports.register = async (req, res) => {
   try {
-    const userdata = await User.findOne({ EMAIL: req.body.EMAIL });
-    console.log(userdata);
+    const { FIRSTNAME, LASTNAME, EMAIL, PASSWORD, MOBILE, ROLE } = req.body;
+
+    // Validate incoming data
+    if (!FIRSTNAME || !LASTNAME || !EMAIL || !PASSWORD || !MOBILE || !ROLE) {
+      return res.status(400).send({ message: "All fields are required" });
+    }
+
+    const userdata = await User.findOne({ EMAIL });
+    console.log("userdata", userdata);
 
     if (userdata) {
-      return res.status(500).send({ message: "Email exist " });
+      return res.status(400).send({ message: "Email already exists" });
     }
-    const userRegister = await User.create(req.body);
+
+    const userRegister = await User.create({
+      FIRSTNAME,
+      LASTNAME,
+      EMAIL,
+      PASSWORD,
+      MOBILE,
+      ROLE,
+    });
     console.log("userRegister", userRegister);
 
     console.log("jwt token", `${process.env.JWT_SECRET_KEY}`);
-    // <===============token=========>
 
     let token = jwt.sign({ userRegister }, `${process.env.JWT_SECRET_KEY}`);
 
     return res.status(200).send({ userRegister, token });
   } catch (err) {
+    console.log("Error during registration:", err.message);
     return res.status(500).send({ message: err.message });
   }
 };
 
 exports.login = async (req, res) => {
   try {
-    const userdata = await User.findOne({ EMAIL: req.body.EMAIL });
+    const { EMAIL, PASSWORD } = req.body;
+
+    // Validate incoming data
+    if (!EMAIL || !PASSWORD) {
+      return res
+        .status(400)
+        .send({ message: "Email and password are required" });
+    }
+
+    const userdata = await User.findOne({ EMAIL });
     console.log("userdata", userdata);
 
     if (!userdata) {
-      return res.status(500).send({ message: "Email and passowrd not match!" });
+      return res
+        .status(400)
+        .send({ message: "Email and password do not match!" });
     }
-    console.log("password", req.body.PASSWORD);
-    const match = userdata.checkPassword(req.body.PASSWORD);
+
+    console.log("password", PASSWORD);
+    const match = userdata.checkPassword(PASSWORD);
 
     if (!match) {
-      return res.status(500).send({ message: "Email and passowrd not match!" });
+      return res
+        .status(400)
+        .send({ message: "Email and password do not match!" });
     }
 
-    // if it matches
+    // If it matches
     const token = generateToken(userdata);
     return res.status(200).send({ userdata, token });
-    // console.log("token chal ra h login me")
-    // var token = jwt.sign(userdata, `${process.env.JWT_SECRET_KEY}`);
-    // return res.status(200).send({userdata,token});
   } catch (error) {
-    console.log(error);
-    return res.status(400).send({ message: error.message });
+    console.log("Error during login:", error.message);
+    return res.status(500).send({ message: error.message });
   }
 };
-
-
-
-
-
