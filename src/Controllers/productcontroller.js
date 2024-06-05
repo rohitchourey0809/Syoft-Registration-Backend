@@ -60,3 +60,24 @@ exports.deleteProduct = async (req, res) => {
     return res.status(400).send({ message: err.message });
   }
 };
+
+exports.paginationqueryparama = async (req, res) => {
+  try {
+    const { _page = 1, _limit = 10, q } = req.query;
+    let query = {};
+    if (q) {
+      query = {
+        $or: [
+          { title: { $regex: new RegExp(q, "i") } },
+          { description: { $regex: new RegExp(q, "i") } },
+        ],
+      };
+    }
+    const products = await Product.find(query)
+      .skip((_page - 1) * _limit)
+      .limit(Number(_limit));
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

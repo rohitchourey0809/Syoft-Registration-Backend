@@ -27,12 +27,13 @@ const router = express.Router();
 //   productController.patchAllProducts
 // );
 
-
 // Create a new product
 router.post("/", productController.createProduct);
 
 // Get all products
 router.get("/", productController.getAllProducts);
+
+router.get("/product", productController.paginationqueryparama);
 
 // Get a single product by ID
 router.get("/:id", productController.getProductById);
